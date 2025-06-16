@@ -19,6 +19,18 @@
                 @enderror
             </div>
             <div class="mb-3">
+                <label for="item_id" class="form-label">Item</label>
+                <select class="form-select @error('item_id') is-invalid @enderror" id="item_id" name="item_id" required>
+                    <option value="">Select Item</option>
+                    @foreach($items as $item)
+                        <option value="{{ $item->id }}" {{ old('item_id') == $item->id ? 'selected' : '' }}>{{ $item->name }}</option>
+                    @endforeach
+                </select>
+                @error('item_id')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+            <div class="mb-3">
                 <label for="pay_amount" class="form-label">Pay Amount</label>
                 <input type="number" class="form-control @error('pay_amount') is-invalid @enderror" id="pay_amount" name="pay_amount" value="{{ old('pay_amount') }}">
                 @error('pay_amount')
