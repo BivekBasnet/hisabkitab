@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\transaction;
 use Illuminate\Http\Request;
+use App\Http\Controllers\customer;
 
 class TransactionController extends Controller
 {
@@ -20,7 +21,8 @@ class TransactionController extends Controller
      */
     public function create()
     {
-        return view('shop.transaction_create');
+        $customer = \App\Models\Customer::all();
+        return view('shop.transaction_create', compact('customer'));
     }
 
     /**
@@ -28,7 +30,15 @@ class TransactionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $transaction = new transaction;
+        $transaction->pay_amount = $request->pay_amount;
+        $transaction->sell_amount = $request->sell_amount;
+        $transaction->transaction_date = $request->transaction_date;
+        $transaction->item = $request->item;
+        $transaction->customer_id = $request->customer_id;
+        $transaction->save();
+
+        return redirect()->back();
     }
 
     /**

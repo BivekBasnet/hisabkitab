@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('customer_id');
+            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
+            $table->string('item');
+            $table->date('transaction_date');
+            $table->decimal('sell_amount', 15, 2);
+            $table->decimal('pay_amount', 15, 2);
             $table->timestamps();
         });
     }
@@ -22,6 +28,9 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::table('transactions', function (Blueprint $table) {
+            $table->dropForeign(['customer_id']);
+        });
         Schema::dropIfExists('transactions');
     }
 };

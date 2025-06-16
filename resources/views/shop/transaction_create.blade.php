@@ -19,14 +19,9 @@
                 @enderror
             </div>
             <div class="mb-3">
-                <label for="item_id" class="form-label">Item</label>
-                <select class="form-select @error('item_id') is-invalid @enderror" id="item_id" name="item_id" required>
-                    <option value="">Select Item</option>
-                    @foreach($items as $item)
-                        <option value="{{ $item->id }}" {{ old('item_id') == $item->id ? 'selected' : '' }}>{{ $item->name }}</option>
-                    @endforeach
-                </select>
-                @error('item_id')
+                <label for="item" class="form-label">Item</label>
+                <input type="text" class="form-control @error('item') is-invalid @enderror" id="item" name="item" value="{{ old('item') }}" required>
+                @error('item')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
@@ -46,7 +41,7 @@
             </div>
             <div class="mb-3">
                 <label for="transaction_date" class="form-label">Transaction Date</label>
-                <input type="date" class="form-control @error('transaction_date') is-invalid @enderror" id="transaction_date" name="transaction_date" value="{{ old('transaction_date') }}" required>
+                <input type="date" class="form-control @error('transaction_date') is-invalid @enderror" id="transaction_date" name="transaction_date" value="{{ old('transaction_date', date('Y-m-d')) }}" required>
                 @error('transaction_date')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
