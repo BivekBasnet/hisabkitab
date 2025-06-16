@@ -8,10 +8,10 @@
             @csrf
             <div class="mb-3">
                 <label for="customer_id" class="form-label">Customer</label>
-                <select class="form-select @error('customer_id') is-invalid @enderror" id="customer_id" name="customer_id" required>
+                <select class="form-select select2 @error('customer_id') is-invalid @enderror" id="customer_id" name="customer_id" required>
                     <option value="">Select Customer</option>
-                    @foreach($customer as $customer)
-                        <option value="{{ $customer->id }}" {{ old('customer_id') == $customer->id ? 'selected' : '' }}>{{ $customer->name }}</option>
+                    @foreach($customer as $cust)
+                        <option value="{{ $cust->id }}" {{ old('customer_id') == $cust->id ? 'selected' : '' }}>{{ $cust->name }}</option>
                     @endforeach
                 </select>
                 @error('customer_id')
@@ -48,9 +48,11 @@
             </div>
             <button type="submit" class="btn btn-primary">Create Transaction</button>
         </form>
+    </div>
 @endsection
 
 @push('styles')
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <style>
         .container {
             padding: 20px;
@@ -59,11 +61,34 @@
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
     </style>
-
 @endpush
 
 @push('script')
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
-        console.log('Customer Create script loaded');
+    <script>
+    $(document).ready(function() {
+        $('.select2').select2({
+            placeholder: 'Select a customer',
+            allowClear: true,
+            ajax: {
+                url: '/api/customers/search',
+                dataType: 'json',
+                delay: 250,
+                processResults: function (data) {
+                    return {
+                        results: $.map(data, function (item) {
+                            return {
+                                text: item.name,
+                                id: item.id
+                            }
+                        })
+                    };
+                },
+                cache: true
+            }
+        });
+    });
     </script>
 @endpush

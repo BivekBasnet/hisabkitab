@@ -88,4 +88,9 @@ class TransactionController extends Controller
         }
         return redirect()->back();
     }
+    public function search(Request $request)
+    {
+        $search = $request->get('q');
+        return \App\Models\Customer::where('name', 'like', "%{$search}%")->get();
+    }
 }

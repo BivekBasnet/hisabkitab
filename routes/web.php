@@ -28,3 +28,5 @@ Route::prefix('transaction')->name('transaction.')->group(function () {
     Route::put('/{id}', [TransactionController::class, 'update'])->name('update');
     Route::delete('/{id}', [TransactionController::class, 'destroy'])->name('destroy');
 });
+
+Route::get('/api/customers/search', [CustomerController::class, 'search']);
